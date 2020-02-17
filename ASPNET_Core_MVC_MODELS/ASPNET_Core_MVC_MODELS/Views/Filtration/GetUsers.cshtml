@@ -1,0 +1,77 @@
+﻿@*Отображение списка юзеров с фильтрацией и сортировкой*@
+@model IEnumerable<ASPNET_Core_MVC_MODELS.Models.User>
+
+@{
+    ViewData["Title"] = "Отображение списка юзеров с фильтрацией и сортировкой";
+}
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<h2>Отображение списка юзеров с фильтрацией и сортировкой</h2>
+
+<p>
+    <a asp-action="CreateUser">Create New</a>
+</p>
+
+@* ФИЛЬТР *@
+
+@using (Html.BeginForm("GetUsers", "Filtration", FormMethod.Get))
+{
+
+    <ul>
+        <li style="display: inline-block;">
+            <p> Поиск по имени:</p>
+            <input type="text" name="searchNameString" value="@ViewData["FilterByName"]" />                        @* Тоже самое:  @Html.TextBox("searchNameString", ViewData["FilterByName"].ToString())*@
+        </li>
+
+        <li style="display: inline-block;">
+            <p>Поиск по возрасту:</p>
+            @Html.DropDownList("searchAge", @ViewData["Ages"] as SelectList,  "--Задайте возраст--")
+        </li>
+
+        <li style="display: inline-block;">
+            <p>
+                <input type="submit" value="Фильтровать" />     @* Сформирует GET-запрос c параметрами: ...Home/GetUsers?searchNameString=Введенное_имя&searchAge=Введенный_возраст *@
+                <a asp-action="GetUsers"> Сброс фильтра </a>
+            </p>
+        </li>
+    </ul>
+ }
+
+@*<input type="date" />*@   @* календарь *@
+
+        @*заголовок столбца таблицы - ссылка, при нажатии на которую в теле запроса передаётся параметр сортировки*@
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <a href="/Filtration/GetUsers?sortOrder=@ViewData["IdSortParm"]"> @Html.DisplayNameFor(model => model.Id) </a>                        @*    вариант 1 - заголовок таблицы - ссылка, при нажатии на которую в теле запроса передаётся параметр сортировки. Фильтра нету  *@
+                    </th>
+                    <th>
+                        <a asp-action="GetUsers" asp-route-sortOrder="@ViewData["NameSortParm"]"
+                           asp-route-searchNameString=@ViewData["FilterByName"]
+                           asp-route-searchAge=@ViewData["FilterByAge"]>@Html.DisplayNameFor(model => model.Name)</a>         @* вариант 2 - то же с помощью таг-хелпера  asp-route-sortOrder. Создаст ссылку : <a href="/Home/GetUsers?sortOrder=name_desc&searchNameString=Vasya&searchAge=20"> Имя юзера </a>*@
+                    </th>
+                    <th>
+                        <a asp-action="GetUsers" asp-route-sortOrder="@ViewData["AgeSortParm"]"
+                           asp-route-searchNameString=@ViewData["FilterByName"]
+                           asp-route-searchAge=@ViewData["FilterByAge"]>@Html.DisplayNameFor(model => model.Age)</a>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>

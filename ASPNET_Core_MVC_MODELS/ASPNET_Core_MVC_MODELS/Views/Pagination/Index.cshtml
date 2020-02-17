@@ -1,0 +1,65 @@
+﻿@using ASPNET_Core_MVC_MODELS.ViewModels
+@model UserIndexViewModel
+
+@{
+    ViewData["Title"] = "UsersPagination";
+}
+
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<h2>UsersPagination</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                AGE
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (User user in Model.Users)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => user.Age)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@if (Model.PageViewModel.HasNextPage)
+{
+    @using (Html.BeginForm("Index", "Pagination", FormMethod.Get))
+    {
+        @Html.Hidden("page", Model.PageViewModel.PageNumber + 1)
+        <input type="submit" value="Вперед" />
+    }
+}
+
+@if (Model.PageViewModel.hasPreviousPage)
+{
+    @using (Html.BeginForm("Index", "Pagination", FormMethod.Get))
+    {
+        @Html.Hidden("page", Model.PageViewModel.PageNumber -1)
+        <input type="submit" value="Назад" />
+    }
+}
+
+
+

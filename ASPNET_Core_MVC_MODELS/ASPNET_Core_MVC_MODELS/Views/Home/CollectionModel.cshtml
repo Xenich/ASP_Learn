@@ -1,0 +1,25 @@
+﻿@* ПЕРЕДАЧА КОЛЛЕКЦИИ МОДЕЛЕЙ В ПРЕДСТАВЛЕНИЕ*@
+@using ASPNET_Core_MVC_MODELS.Models        @* Подключаем пространство имён, в котором расположен класс этой модели *@
+@model List<Game>      // Указываем коллекцию экземпляров типа, которая будет передаваться в представление
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>ИГРЫ</title>     
+    </head>
+
+    <body>
+        <h2>Игры</h2><br /><br />
+        @foreach (Game game in Model)       // обращаемся к коллекции по ключевому слову Model
+        {
+            <h3>Game: @game.Name</h3>
+            <h3>Platform: @game.Platform</h3>
+            <h3>Engine: @game.Engine</h3>
+            <br /><hr />
+        }
+
+    </body>
+</html>
+

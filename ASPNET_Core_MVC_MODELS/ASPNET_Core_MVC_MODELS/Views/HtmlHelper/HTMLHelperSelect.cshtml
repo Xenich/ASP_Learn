@@ -1,0 +1,29 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+    ViewData["Title"] = "HTMLHelperSelect";
+}
+
+@* создаём форму, которая будет отправлять POST запрос в контроллер HtmlHelper в метод HTMLHelperForm *@
+@using (Html.BeginForm("HTMLHelperSelect", "HtmlHelper", FormMethod.Post))
+{
+    <p>
+
+        @Html.Label("select", "Выпадающий список созданный на месте")<br />
+        @Html.DropDownList("User", new SelectList(new string[] { "Tom", "Sam", "Bob", "Alice" }), "Выберите пользователя")      @* генерирует выпадающий список <select id="user" name="user"><option value>Выберите пользователя</option> <option>Tom</option> .... </select> *@
+        <br /><br />
+        @Html.Label("select1", "Выпадающий список с коллекцией, переданной из контроллера во ViewBag")<br />
+        @Html.DropDownList("newUsers", ViewBag.Users as SelectList)      @* в контроллере это SelectList(users, "Id", "Name"), отображаться будет св-во Name модели, а передаваться в контроллер значение св-ва id
+        выбрано по умолчанию будет user с id=2, потому что мы передали из контроллера Selected Value=2 в SelectList  *@
+
+        <br /><br />
+        @Html.Label("select2", "ListBox с той же самой коллекцией из контроллера")<br />         @* ListBox можно создавать такими же двумя способами, создадим с помощью того же переданного ViewBag.Users *@
+        @Html.ListBox("ListUsers", ViewBag.Users as MultiSelectList)    @* так же можно SelectList *@
+        <br /><br />
+        @Html.Label("select2", "Создание выпадающего списка на основе перечисления")<br />      @* перечисление TimeOfDay находтся в пр. имен ASPNET_Core_MVC_MODELS.Model *@
+        @Html.DropDownList("daytime", Html.GetEnumSelectList(typeof(TimeOfDay)))
+        <br />
+        <input type="submit" value="Отправить" />
+        <br />
+    </p>
+}

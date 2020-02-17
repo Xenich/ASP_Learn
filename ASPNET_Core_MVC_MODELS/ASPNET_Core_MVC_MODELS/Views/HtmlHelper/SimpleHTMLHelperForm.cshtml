@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+    ViewData["Title"] = "HTMLHelperForm";
+}
+
+@* создаём форму, которая будет отправлять POST запрос в контроллер HtmlHelper в метод HTMLHelperForm *@
+@using (Html.BeginForm("SimpleHTMLHelperForm", "HtmlHelper", FormMethod.Post))
+{
+    <p>
+        @Html.Label("Name", "Имя")<br />     @*// сгенерирует разметку: <label for="Name">Имя</label>*@
+        @Html.TextBox("Name")                @*// генерирует тег input с готовыми аттрибутами: <input id="Name" name="Name" type="text" value="">*@
+        <br />
+        @Html.Label("myID", "Текст поле с дефолтным значением и своим параметром ID")    <br />
+        @Html.TextBox("Price", "789", new { type = "number", id = "myID" })       @* Второй парам. - значение по умолчанию, третий парам. - можно указывать свои аттрибуты с помощью анонимного объекта *@
+        <br />
+        @Html.Label("textAREA", "Многострочное текстовое поле")<br />
+        @Html.TextArea("textAREA", "Привет мир", 5, 50, null)          @* сгенерирует разметку: <textarea cols="50" id="textAREA" name="textAREA" rows="5">Привет мир</textarea> *@
+        <br />
+        @Html.Label("hidden", "Тут есть скрытое поле")
+        @Html.Hidden("hidden", "2")                          @* сгенерирует разметку: <input id="hidden1" name="hidden1" type="hidden" value="2" /> *@
+        <br />
+        @Html.Label("UserPassword", "Пароль")<br />
+        @Html.Password("UserPassword", "default")                 @* сгенерирует разметку: <input id="UserPassword" name="UserPassword" type="password" value="default" /> *@
+        <br />
+        @Html.Label("color", "RadioButton")<br />
+        @Html.RadioButton("color", "red", true) <span>Красный</span><br />          @* сгенерирует разметку: <input checked="checked" id="color" name="color" type="radio" value="red" />*@
+        @Html.RadioButton("color", "blue") <span>Синий</span>                 @* сгенерирует разметку: <input id="color" name="color" type="radio" value="blue" />
+                                                                                Для создания группы переключателей, надо присвоить всем им одно и то же свойство name *@
+        <br />
+        @Html.Label("Enable", "CheckBox")<br />
+        @Html.CheckBox("Enable", false)                 @* создаётся два элемента: <input id="Enable" name="Enable" type="checkbox" value="true">
+                                                        и <input name="Enable" type="hidden" value="false"> - скрытое поле, которое обычно
+                                                        помещается в конец формы и используется для отслеживания изменений значения флажка*@
+        <br />
+        <input type="submit" value="Отправить" />
+                  @* В итоге в контроллер в метод SimpleHTMLHelperForm(...) в POST-запросе приходят следующие переменные: Name, Price, textAREA, hidden, UserPassword, color, Enable *@
+    </p>
+}

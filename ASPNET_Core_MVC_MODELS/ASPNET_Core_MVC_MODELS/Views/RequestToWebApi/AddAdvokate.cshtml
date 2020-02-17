@@ -1,0 +1,45 @@
+﻿@using ASPNET_Core_MVC_MODELS.ViewModels.AdvokatesViewModel        @*// Подключаем пространство имён, в котором расположен класс этой модели*@
+@model Advokate
+  @*// Тип модели, которая передается в хелпер, должен быть тем же самым, что указан для всего представления с помощью директивы @model*@
+
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Добавление нового адвоката</title>
+</head>
+<body>
+    <h1>Добавление нового адвоката</h1>
+
+    @*       @using (Html.BeginForm("AddAdvokate", "RequestToWebApi", FormMethod.Post))*@
+    <form asp-controller="RequestToWebApi" asp-action="AddAdvokate" asp-antiforgery="true">
+        <div class="validation" asp-validation-summary="ModelOnly"></div>
+        <div >
+            <label asp-for="Name"></label><br />         @* с помощью tag-хелпера. Тоже самое что @Html.LabelFor(m => m.Name, "Имя") *@
+            <input  type="text" asp-for="Name" />                         @*       @Html.TextBoxFor(m=> m.Name)   *@
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="Age"></label><br />
+            @Html.TextBoxFor(m => m.Age, "", new { type = "number" })       @* Сгенерирует: <input data-val="true" data-val-required="The Age field is required." id="Age" name="Age" type="number" value="">*@
+            <span asp-validation-for="Age"></span>
+        </div>
+        <div>
+            <input type="submit" value="Отправить" />
+        </div>
+</form>
+
+
+    @section Scripts
+    {
+        <script src="~/lib/jquery/dist/jquery.min.js"></script><!--подключение jquery-->
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    }
+</body>
+</html>

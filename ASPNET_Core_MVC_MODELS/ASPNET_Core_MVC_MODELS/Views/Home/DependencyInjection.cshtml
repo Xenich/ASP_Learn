@@ -1,0 +1,13 @@
+﻿@* Внедрение зависимостей. Сервис MyService находится в пространстве имён ASPNET_Core_MVC_MODELS.Services - его нужно подключить с помощью inject*@
+@* так же необходимо подключить его в файле startup: services.AddTransient<MyService>(); *@
+
+@inject ASPNET_Core_MVC_MODELS.Services.MyService myService
+@{
+    ViewData["Title"] = "DependencyInjection";
+}
+
+<br /><br />
+<br /><br />
+<h2>DependencyInjection</h2>
+<p>@myService.GreetFromService()</p>
+

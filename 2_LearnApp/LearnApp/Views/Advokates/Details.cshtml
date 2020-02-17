@@ -1,0 +1,55 @@
+﻿@model LearnApp.Models.Advokate
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Advokate</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+                
+        <dt>
+            @Html.DisplayNameFor(model => model.Case)
+        </dt>
+        <dd>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Информация</th>
+                        <th>Дата</th>
+                        <th>Редактировать</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var itemCase in Model.Case)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(item => itemCase.Info)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(item => itemCase.Date)
+                            </td>
+                            <td>
+                                <a asp-controller="Cases" asp-action="Edit" asp-route-id="@itemCase.Id">Edit</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </dd>      
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

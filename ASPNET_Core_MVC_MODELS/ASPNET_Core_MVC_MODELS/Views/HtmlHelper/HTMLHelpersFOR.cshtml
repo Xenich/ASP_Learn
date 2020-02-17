@@ -1,0 +1,44 @@
+﻿@*                                              СТРОГО ТИПИЗИРОВАННЫЕ ХЕЛПЕРЫ.
+    Этот вид хелперов принимает в качестве параметра лямбда-выражение, в котором указывается то свойство модели, к которому должен быть привязан данный хелпер.
+    Строго типизированные хелперы могут использоваться только в строго типизированных представлениях .*@
+
+@using ASPNET_Core_MVC_MODELS.Models        @*// Подключаем пространство имён, в котором расположен класс этой модели*@
+@model User                                 // Тип модели, которая передается в хелпер, должен быть тем же самым, что указан для всего представления с помощью директивы @model
+
+@{
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+    ViewData["Title"] = "Строго типзированные хелперы";
+}
+
+@* создаём форму, которая будет отправлять POST запрос в контроллер HtmlHelper в метод HTMLHelpersFOR *@
+
+@using (Html.BeginForm("HTMLHelpersFOR", "HtmlHelper", FormMethod.Post))
+{
+    @Html.EditorForModel()
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+}
+
+
+@using (Html.BeginForm("HTMLHelpersFOR", "HtmlHelper", FormMethod.Post))
+{
+    <p>
+        @Html.Label("label", "USER:")<br />
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Id, "Айдишник")<br />
+        @Html.TextBoxFor(m => m.Id)
+    </p>
+    <p>
+        <label asp-for="Name"></label><br />         @* с помощью tag-хелпера. Тоже самое что @Html.LabelFor(m => m.Name, "Имя") *@        
+        @Html.TextBoxFor(m => m.Name)
+    </p>
+    <p>
+        @Html.LabelFor(m => m.Age)<br />
+        @Html.TextBoxFor(m => m.Age, "", new { type = "number" })       @* Сгенерирует: <input data-val="true" data-val-required="The Age field is required." id="Age" name="Age" type="number" value="">*@
+    </p>
+    <p>
+        <input type="submit" value="Отправить" />
+    </p>
+}

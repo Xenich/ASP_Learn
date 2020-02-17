@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="SingleModel">SingleModel</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="CollectionModel">CollectionModel</a></li>
+            <li><a asp-area="" asp-controller="Home" asp-action="DifferentModelsCollection">DifferentModelsCollection</a></li>
+            <li style="max-width:200px"><a asp-area="" asp-controller="Home" asp-action="FormDataFromViewToController">Передача данных в контроллер в виде набора полей</a></li>
+        </ul>
+    </div>
+    @RenderBody()
+</body>
+</html>

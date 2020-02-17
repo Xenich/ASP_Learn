@@ -1,0 +1,34 @@
+﻿@* ПЕРЕДАЧА КОЛЛЕКЦИЙ МОДЕЛЕЙ РАЗНЫХ ТИПОВ В ПРЕДСТАВЛЕНИЕ*@
+@using ASPNET_Core_MVC_MODELS.Models        @* Подключаем пространство имён, в котором расположены классы наших моделей *@
+@using ASPNET_Core_MVC_MODELS.ViewModels    @* Подключаем пространство имён, в котором расположен класс со списками моделей различных типов  *@
+@model DifferentViewModels      // моделью будет класс со списками наших моделей разных типов
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ИГРЫ И КОМПАНИИ</title>
+</head>
+
+<body>
+    <h2>Игры</h2><br /><br />
+    @foreach (Game game in Model.Games)       // обращаемся к коллекции по ключевому слову Model
+    {
+        <h3>Game: @game.Name</h3>
+        <h3>Platform: @game.Platform</h3>
+        <h3>Engine: @game.Engine</h3>
+        <br /><hr />
+    }
+    <br /><hr />
+    <h2>Компании</h2><br /><br />
+    @foreach (Company company in Model.Companies)       // обращаемся к коллекции по ключевому слову Model
+    {
+        <h3>Name: @company.Name</h3>
+        <h3>Employees: @company.Employees</h3>
+        <br /><hr />
+    }
+
+</body>
+</html>
+

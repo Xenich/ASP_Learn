@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Привязка данных в KnockoutJS</title>
+		<script type="text/javascript" src="knockout-3.5.1.js"></script>
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+
+	</head>
+
+	<body>
+		<h1>Knockout.html</h1>
+		<div id="simple"> 	<!-- к этому айдишнику будем привязывать модель  viewModel-->
+			<h3> <span data-bind="text: name"></span></h3>  <!-- привязка установлена к некоторому свойству name модели-->
+			<span data-bind="text: lastName"></span>		<!-- сгенерирует  элемент <span data-bind="text: lastName">Личман</span> -->
+			<div id="Айдишник" data-bind="text: $element.id"></div>
+			<p data-bind="text: phone"></p>
+			<p data-bind="text: companyWork"></p>
+			<button id="buttonChange">Изменить значение наблюдаемого объекта (observable)</button>		
+			<br>
+	<!---->				
+			<div  data-bind="visible: display">Привязка видимости (блок скрывается при нажатии на кнопку)</div>	<!-- привязка видимости -->
+			<br>
+			<button id="buttonVisibility">Изменение видимости</button>		
+			<br>
+	<!---->				
+			<a data-bind="attr: { href: url}">Привязка аттрибута href к тегу a</a>				<!-- привязка аттрибутов -->
+			<br><hr>
+	<!---->		
+			<label>Привязка к массиву с помощью foreach и %data</label>
+			<ul data-bind="foreach: elementArr">		<!-- Параметр foreach позволяет привязать массив к элементу разметки html -->
+				<li data-bind="text: $data"></li>		<!-- параметр $data указывает на текущий перебираемый объект в foreach из UL-->
+			</ul>
+			<hr>
+			<br>
+			
+		
+	<!---->		
+			<label>Более сложная привязка к массиву с помощью foreach</label>
+			<ul data-bind="foreach: booksArr">		<!-- Привязка боле сложного массива -->
+				<li >
+					<p data-bind="text: author"></p>			<!-- Можно и так: <p data-bind="text: $data.author"></p> -->
+					<p data-bind="text: title"></p>
+				</li>		
+			</ul>
+			<button id="changeArray">Изменение массива</button>
+			<hr>
+			<br>	
+	<!----> 
+			<h3>SELECT</h3>							
+			<p>Выбранная книга : </p>
+			<p data-bind="text: selectedValue"></p>
+																		<!-- В качестве значения параметру options передается объект, представляющий массив -->
+			<select data-bind="options: booksArr,			
+									optionsText: 'author',			
+									optionsValue: 'title',
+									value: selectedValue,
+									optionsCaption: '-- Выберите книгу --'	">	
+			</select>
+																	<!-- optionsCaption: устанавливает заголовок в списке
+																	optionsText: устанавливает отображаемую элементом списка текстовую метку
+																	optionsValue: устанавливает значение элемента списка
+																	optionsAfterRender: назначает функцию обратного вызова, которая срабатывает при завершении рендеринга элементов списка 
+																	value: выбранное пользователем значение привязано к элементу модели selectedValue-->
+
+<!---->	
+			<h2>Контекст привязки</h2>
+			<p data-bind="text: name"></p>				<!-- Выведет "Дима" -->
+			<div data-bind="with: company">				<!-- Блок div здесь в рамках контекста привязки with ограничен объектом company -->
+				<p data-bind="text: name"></p>			<!-- Выведет "Samsung" потому что внутри Company -->
+				<p data-bind="text: $parent.name"></p>		<!-- Выведет "Дима" потому что parent у Company-->
+				<p data-bind="text: $root.name"></p>		<!-- Выведет name у корневого элемента viewModel-->
+			</div>	
+			<hr>
+			<br>
+		</div>
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!-- 																ДРУГАЯ МОДЕЛЬ														 -->
+
+	<div id="login-form">		<!-- к этому айдишнику будем привязывать модель viewModelQwery -->
+		<h2>Отправка формы на сервер</h2>
+		<form data-bind="submit: submitHandler, with: user">		<!-- все данные инкапсулированы в свойстве user, к которым на форме установлена привязка-->
+			<input type="text" name="login" data-bind="textInput: login" />
+			<input type="text" name="password" data-bind="textInput: password" />
+			<button type="submit">Отправить</button>
+		</form>
+		<p data-bind="text: ko.toJSON(user)"></p>
+	</div>
+
+
+<!-- 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+
+		<script>
+// ***************************************     МОДЕЛЬ:		**********************************
+			
+			var viewModel =	//В коде javascript создается объект viewModel, который выполняет роль компонента ViewModel (что-то типа модели)
+			{
+					name: "Дима",
+					lastName: "ФАМИЛИЯ",		
+							//humanComputed: co.computed(function(){return name() + " " + lastName();}),		// вычисляемое (computed) значение
+												// наблюдаемые объекты позволяют отслеживать изменения
+					phone: ko.observable("0919014689"),		// метод ko.observable() применяется для создания наблюдаемых объектов
+					companyWork: ko.observable("Abedor"),
+					display: ko.observable(true),				// привязка видимости объекта
+					url: ko.observable("http://google.com"),			// для привязки атрибутов
+
+					elementArr: ko.observableArray(["Элемент 1", "Элемент 2", "Элемент 3", "Элемент 4"]),		// привязка массива. 
+																				
+					booksArr: ko.observableArray				// привязка более сложного массива. Для наблюдаемого массива используется метод ko.observableArray
+					([ 
+						{author: "Пушкин", title: "Евгений онегин"},
+						{author: "Байрон", title: "Дон Жуан"},
+						{author: "Сервантес", title: "Дон Кихот"}
+					]),
+
+					selectedValue: ko.observable(),			// изнчально ничего не выбираем. Будет использоваться для наблюдения за выбранным объектом массива
+					company:
+					{   
+						name: "Samsung",
+						country: "Республика Корея"
+					}
+				
+			};
+			ko.applyBindings(viewModel, document.getElementById("simple"));		// При вызове этого метода Knockout обрабатывает представление (html-код веб-страницы) и компонент ViewModel.
+																					// обработка происходит только для элементов внутри дива с id="simple"
+																					// Все элементы привязки, которые имеются в представлении, обрабатываются и динамически заменяются данными из ViewModel.
+
+
+//	**********************************	 МОДЕЛЬ для отправки на сервер запроса		*****************************					// сервер - WEBAPI , который находится в папке ...\Programming\C#\ASPNet\WebApi
+
+			function viewModelQwery()			//  вместо простого объекта JavaSctipt используется функция конструктора, которая создает объект viewModelQwery.
+			{
+				var self = this;						// прием, который позволяет не отслеживать ссылку на объект, представленную ключевым словом this
+				self.user=								// привязка для формы отправки на сервер через AJAX
+				{
+					login: ko.observable("login"),
+					password: ko.observable("password"),
+					data: ko.observableArray([	"Пушкин", "Дон Жуан"	])
+				};
+									// обработчик отправки формы на сервер с помощью AJAX - он привязан к форме в HTML
+
+
+				self.submitHandler = getResponse; //function() 
+			};
+			viewModelQwery = new viewModelQwery();
+			ko.applyBindings(viewModelQwery, document.getElementById("login-form"));		// привязываем эту модель к элементу с ID = "login-form"
+
+			
+// функция отправки запроса на сервер
+
+			function getResponse()
+			{
+				var userInfo = ko.toJSON(viewModelQwery.user);
+				console.log(userInfo);
+				$.ajax(
+				{
+						url: 'http://localhost:5549/api/Knockout/getResponse',
+						//data: {'login':self.user.login, 'password':self.user.password},
+						data: ko.toJS(viewModelQwery.user),
+						type: "POST",
+						contentType: "application/x-www-form-urlencoded",
+						dataType : "json"
+				}).success(successHandler).error(viewModelQwery.errorHandler);
+			};
+
+			function successHandler(responceData) 
+			{
+				viewModelQwery.user.login(responceData.login);
+				viewModelQwery.user.password(responceData.password);
+				alert("Success!");
+			};
+
+			function errorHandler()
+			{
+				alert("Error!");
+			};
+
+// ************************************************************************************************************************
+
+// изменение наблюдаемого объекта
+			var buttonChange = document.getElementById("buttonChange");
+			buttonChange.addEventListener("click", function()
+					{
+						viewModel.phone("изменили телефон с помощью observable");		// изменяем наблюдаемый объект  в модели 	viewModel, оответственно,
+																											// изменяется и содержимое html-элемента
+					}
+				);
+// изменение видимости					
+			var buttonVisibility = document.getElementById("buttonVisibility");
+			buttonVisibility.addEventListener("click", function(){
+				if(viewModel.display()==true)
+					viewModel.display(false);			// устанавливаем значение видимости объекта display в false
+				else	
+					viewModel.display(true);
+			});
+
+// подписка на событие изменения наблюдаемого объекта с помощью функции subscribe - это функция из библ. Knockout
+			var subscription = viewModel.phone.subscribe(function(newValue)
+				{
+					alert("Новое значение: " + newValue);		// при изменении значения модели новое значение объекта выводится в диалоговом окне
+				}
+			)
+			//subscription.dispose();		// отмена подписки - в любой момент можно отписаться
+
+// Изменение массива
+			var buttonArr = document.getElementById("changeArray");
+			buttonArr.addEventListener("click", function()
+				{
+					viewModel.booksArr.push({author: "Мелвилл", title: "Моби Дик"});
+					//viewmodel.booksArr.removeAll();
+					//viewModel.booksArr()[0].title("new name");			// чтоб сработало установить ko.observable для title в массиве
+				}
+			);
+
+
+		</script>
+	</body>
+
+</html>

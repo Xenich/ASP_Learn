@@ -1,0 +1,73 @@
+﻿@{
+    //Layout = null;
+    Layout = "~/Views/Shared/_MyLayout.cshtml";
+}
+    <body>
+        <h1>Передача данных из представления в контроллер</h1><br /><br />
+
+        <h4>Передача данных в контроллер с помощью метода GET из строки запроса</h4>
+        <a href="~/Home/DataFromViewToControllerByGETFields?Name=name&lastName=Last_Name">~/Home/DataFromViewToControllerByGETFields?Name=name&lastName=Last_Name</a>
+        <br />
+        <hr />
+        <h2>Данные игры</h2>
+
+        <h3>Передача данных в контроллер в виде набора полей</h3>
+        @* атрибут name у input-ов должен совпадать с именем принимаемых параметров в методе DataFromViewToControllerByFields(string name, string platform, string engine) в контроллере *@
+        <form method="post" action="~/Home/DataFromViewToControllerByFields">
+            <label>Name:</label><br />
+            <input type="text" name="name" /><br />
+            <label>Platform:</label><br />
+            <input type="text" name="platform" /><br />
+            <label>Engine:</label><br />
+            <input type="text" name="engine" /><br />
+            <input type="submit" value="Отправить" /><br /><br />
+        </form>
+        <hr />
+
+        <h3>Передача данных в контроллер в виде объекта</h3>
+        @* атрибут name у input-ов  должен совпадать с названием свойств принимаемого класса Game в методе DataFromViewToControllerByObject(Game game) в контроллере *@
+        <form method="post" action="~/Home/DataFromViewToControllerByObject">
+            <label>Name:</label><br />
+            <input type="text" name="name" /><br />     @* можно name="game.name" но тогда и у остальных инпутов сделать также *@
+            <label>Platform:</label><br />
+            <input type="text" name="platform" /><br />
+            <label>Engine:</label><br />
+            <input type="text" name="engine" /><br />
+            <input type="submit" value="Отправить" /><br /><br />
+        </form>
+        <hr />
+
+        <h3>Передача данных в контроллер в виде набора объектов</h3>
+        @* как и при передаче в виде одного объекта - имена должны совпадать плюс надо указывать имя принимаемого аргумента в контроллере - games[i] , но объектов несколько*@
+        <form method="post" action="~/Home/DataFromViewToControllerByArrayOfObjects">
+            @for (int i = 0; i < 3; i++)
+            {
+                <h4>Game №@i</h4>
+                <label>Name:</label><br />
+                <input type="text" name="games[@i].name" /><br />
+                <label>Platform:</label><br />
+                <input type="text" name="games[@i].platform" /><br />
+                <label>Engine:</label><br />
+                <input type="text" name="games[@i].engine" /><br /><br />
+            }
+            <input type="submit" value="Отправить" /><br /><br />
+        </form>
+        <hr />
+        @* В контроллере в соответствующем методе это обрабатывается с помощью Request.Query и Request.Form *@
+        <h3>Передача данных в контроллер с помощью контекста запроса</h3>
+        <h4>Передача данных в контроллер с помощью контекста запроса из строки запроса</h4>
+        <a href="~/Home/DataFromContextByHref?param1=1&param2=2&param3=3">~/Home/DataFromContextByHref?param1=1 param2=2 param3=3</a>
+        <br />
+        <h4>Передача данных в контроллер с помощью контекста запроса из формы</h4>
+        <form method="post" action="~/Home/DataFromContextByForm">
+            <label>Name:</label><br />
+            <input type="text" name="name" /><br />
+            <label>Platform:</label><br />
+            <input type="text" name="platform" /><br />
+            <label>Engine:</label><br />
+            <input type="text" name="engine" /><br />
+            <input type="submit" value="Отправить" /><br /><br />
+        </form>
+        <hr />
+    </body>
+
